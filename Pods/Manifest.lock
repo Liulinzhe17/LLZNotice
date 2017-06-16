@@ -1,0 +1,23 @@
+PODS:
+  - FMDB (2.6.2):
+    - FMDB/standard (= 2.6.2)
+  - FMDB/standard (2.6.2)
+  - JCore (1.1.1)
+  - JPush (3.0.2):
+    - JCore (~> 1.1.1)
+  - MJRefresh (3.1.12)
+
+DEPENDENCIES:
+  - FMDB
+  - JPush
+  - MJRefresh
+
+SPEC CHECKSUMS:
+  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
+  JCore: 2210a789c8efb7dc2a46b1c24d2209b995b18ad2
+  JPush: 01a693fafe51b93eafc2e368bbc7a7cc07e12ce4
+  MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
+
+PODFILE CHECKSUM: e66dcdc255c689a103ab5abf04cf9c1331533d61
+
+COCOAPODS: 1.2.0
