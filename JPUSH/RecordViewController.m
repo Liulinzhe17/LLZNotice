@@ -11,31 +11,49 @@
 #import "DataBase.h"
 #import "History.h"
 #import "MJRefresh.h"
+#import "DetailViewController.h"
 
-@interface RecordViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface RecordViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchControllerDelegate,UISearchResultsUpdating>
 
 @property(nonatomic,strong)UITableView *tableView;
 @property(nonatomic,strong)NSMutableArray *dataArray;
+@property(nonatomic,strong)UISearchController *serachController;
+@property(nonatomic,strong)NSMutableArray *searchArray;
 
 @end
 
-@implementation RecordViewController
-
+@implementation RecordViewController{
+    DetailViewController *detailVC;
+}
+-(UISearchController *)serachController{
+    if(_serachController==nil){
+        _serachController=[[UISearchController alloc]initWithSearchResultsController:nil];
+        _serachController.delegate=self;
+        _serachController.searchResultsUpdater=self;
+        _serachController.dimsBackgroundDuringPresentation=NO;
+        _serachController.hidesNavigationBarDuringPresentation=YES;
+        _serachController.hidesBottomBarWhenPushed=NO;
+        _serachController.searchBar.backgroundImage=[UIImage new];
+        //光标颜色
+        [[[_serachController.searchBar.subviews objectAtIndex:0].subviews objectAtIndex:1] setTintColor:[UIColor redColor]];
+        //字体颜色
+        UITextField *searchField = [_serachController.searchBar valueForKey:@"_searchField"];
+        searchField.textColor = [UIColor blueColor];
+        //placeHolder颜色
+        [searchField setValue:[UIColor greenColor] forKeyPath:@"_placeholderLabel.textColor"];
+    }
+    return _serachController;
+}
 -(UITableView *)tableView{
     if (_tableView==nil) {
         _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStylePlain];
+        _tableView.tableHeaderView=self.serachController.searchBar;
         _tableView.rowHeight=50;
         _tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
         _tableView.dataSource=self;
         _tableView.delegate=self;
         _tableView.mj_header=[MJRefreshNormalHeader headerWithRefreshingBlock:^{
-            self.dataArray = [[DataBase sharedDataBase] getAllHistory];
-            [self.tableView reloadData];
-            // 模拟延迟加载数据，因此2秒后才调用（真实开发中，可以移除这段gcd代码）
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                // 结束刷新
-                [_tableView.mj_header endRefreshing];
-            });
+            [self updateRecord];
         }];
     }
     return _tableView;
@@ -43,15 +61,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title=@"历史记录";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addData)];
-    
+    //隐藏导航栏上的右btn
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addData)];
     [self.view addSubview:self.tableView];
+    detailVC=[[DetailViewController alloc]init];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     self.dataArray = [[DataBase sharedDataBase] getAllHistory];
-    [self.tableView.mj_header beginRefreshing];
+   [self.tableView.mj_header beginRefreshing];
+    
 }
 
 
@@ -60,10 +80,11 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
-    return self.dataArray.count;
+    return self.serachController.active?self.searchArray.count:self.dataArray.count;
 }
-
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 80;
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *identifier =@"Record";
     Record *cell=[tableView dequeueReusableCellWithIdentifier:identifier];
@@ -71,8 +92,13 @@
     {
         cell=[[[NSBundle mainBundle]loadNibNamed:@"Record" owner:nil options:nil]lastObject];
     }
+    History *history;
+    if (self.serachController.active) {
+         history= self.searchArray[indexPath.row];
+    }else{
+         history = self.dataArray[indexPath.row];
+    }
     
-    History *history = self.dataArray[indexPath.row];
     
     cell.Time.text=history.Time;
     cell.Detail.text=history.Detail;
@@ -95,14 +121,29 @@
         cell.State.text=history.State;
         cell.State.textColor=[UIColor redColor];
     }
-    if (cell.Detail.frame.size.width>self.view.frame.size.width-100) {
-        NSLog(@"11111");
-    }
     return cell;
     
 }
 
+#pragma mark -search result
 
+-(void)updateSearchResultsForSearchController:(UISearchController *)searchController{
+    //    NSPredicate *predicate=[NSPredicate predicateWithFormat:@"SELF LIKE %@",searchString];
+    //    self.searchArray=[NSMutableArray arrayWithArray:[self.dataArray filteredArrayUsingPredicate:predicate]];
+    
+    NSString *searchString=[searchController.searchBar text];
+    if(self.searchArray!=nil){
+        [self.searchArray removeAllObjects];
+    }
+    for (int i=0; i<self.dataArray.count; i++) {
+        History *h=self.dataArray[i];
+        if([h.Detail rangeOfString:searchString].location!=NSNotFound){
+            [self.searchArray addObject:self.dataArray[i]];
+        }
+    }
+    [self.tableView reloadData];
+    
+}
 
 /**
  *  设置删除按钮
@@ -111,8 +152,14 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (editingStyle == UITableViewCellEditingStyleDelete){
-        
-        History *history = self.dataArray[indexPath.row];
+
+        History *history;
+        if (self.serachController.active) {
+            history=self.searchArray[indexPath.row];
+            [self.searchArray removeObjectAtIndex:indexPath.row];
+        }else{
+            history=self.dataArray[indexPath.row];
+        }
         
         [[DataBase sharedDataBase] deleteHistory:history];
         
@@ -147,6 +194,20 @@
     //    self.dataArray = [[DataBase sharedDataBase] getAllPerson];
     //
     //    [self.tableView reloadData];
+    
+    History *h;
+    if (self.serachController.active) {
+        h=self.searchArray[indexPath.row];
+    }else{
+        h=self.dataArray[indexPath.row];
+    }
+    NSLog(@"%@",h.Detail);
+    detailVC.time.text=h.Time;
+    detailVC.detail.text=h.Detail;
+    detailVC.state.text=h.State;
+    //收回搜索框
+    self.serachController.active=NO;
+    [self.navigationController pushViewController:detailVC animated:YES];
     
 }
 
@@ -191,6 +252,14 @@
     return _dataArray;
     
 }
+- (NSMutableArray *)searchArray{
+    if (!_searchArray) {
+        _searchArray = [[NSMutableArray alloc] init];
+        
+    }
+    return _searchArray;
+    
+}
 //字符串转日期
 -(NSDate *)datefromstring:(NSString *)dateStr
 {
@@ -218,5 +287,17 @@
         return 1;
     }
     return -1;
+}
+- (void)willPresentSearchController:(UISearchController *)searchController{
+    self.tabBarController.tabBar.hidden=YES;
+}
+- (void)willDismissSearchController:(UISearchController *)searchController{
+    self.tabBarController.tabBar.hidden=NO;
+}
+# pragma mark - 刷新列表
+-(void)updateRecord{
+    self.dataArray = [[DataBase sharedDataBase] getAllHistory];
+    [self.tableView reloadData];
+    [self.tableView.mj_header endRefreshing];
 }
 @end

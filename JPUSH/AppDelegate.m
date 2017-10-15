@@ -110,7 +110,6 @@
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     //在applicationWillEnterForeground方法（App即将进入前台）中将小红点清除
     NSLog(@"清除小红点");
-    
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 

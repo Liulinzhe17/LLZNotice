@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		414111341F0FCDAF00F67C66 /* Foundation+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 414111331F0FCDAF00F67C66 /* Foundation+Log.m */; };
 		414BAFD11E7E948C00B981F2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 414BAFD01E7E948C00B981F2 /* main.m */; };
 		414BAFD41E7E948C00B981F2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 414BAFD31E7E948C00B981F2 /* AppDelegate.m */; };
 		414BAFD71E7E948C00B981F2 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 414BAFD61E7E948C00B981F2 /* ViewController.m */; };
@@ -18,6 +19,8 @@
 		4152C5421EE59CC6005A1192 /* RecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4152C5411EE59CC6005A1192 /* RecordViewController.m */; };
 		4152C5471EE5A357005A1192 /* Record.m in Sources */ = {isa = PBXBuildFile; fileRef = 4152C5451EE5A357005A1192 /* Record.m */; };
 		4152C5481EE5A357005A1192 /* Record.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4152C5461EE5A357005A1192 /* Record.xib */; };
+		415611671F934BE6004A2E64 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 415611651F934BE6004A2E64 /* DetailViewController.m */; };
+		415611681F934BE6004A2E64 /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 415611661F934BE6004A2E64 /* DetailViewController.xib */; };
 		4174BA991EEC235300B04ADD /* History.m in Sources */ = {isa = PBXBuildFile; fileRef = 4174BA981EEC235300B04ADD /* History.m */; };
 		4174BA9C1EEC244200B04ADD /* DataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4174BA9B1EEC244200B04ADD /* DataBase.m */; };
 		41772E851E7E97D4002A39CA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41772E841E7E97D4002A39CA /* UIKit.framework */; };
@@ -50,6 +53,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		414111331F0FCDAF00F67C66 /* Foundation+Log.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Foundation+Log.m"; sourceTree = "<group>"; };
 		414BAFCC1E7E948C00B981F2 /* JPUSH.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JPUSH.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		414BAFD01E7E948C00B981F2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		414BAFD21E7E948C00B981F2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -72,6 +76,9 @@
 		4152C5441EE5A357005A1192 /* Record.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Record.h; sourceTree = "<group>"; };
 		4152C5451EE5A357005A1192 /* Record.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Record.m; sourceTree = "<group>"; };
 		4152C5461EE5A357005A1192 /* Record.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Record.xib; sourceTree = "<group>"; };
+		415611641F934BE6004A2E64 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		415611651F934BE6004A2E64 /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		415611661F934BE6004A2E64 /* DetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewController.xib; sourceTree = "<group>"; };
 		4174BA971EEC235300B04ADD /* History.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = History.h; sourceTree = "<group>"; };
 		4174BA981EEC235300B04ADD /* History.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = History.m; sourceTree = "<group>"; };
 		4174BA9A1EEC244200B04ADD /* DataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBase.h; sourceTree = "<group>"; };
@@ -168,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				414BB0021E7E94AD00B981F2 /* JPUSH.entitlements */,
+				414111331F0FCDAF00F67C66 /* Foundation+Log.m */,
 				4174BA9A1EEC244200B04ADD /* DataBase.h */,
 				4174BA9B1EEC244200B04ADD /* DataBase.m */,
 				414BAFD21E7E948C00B981F2 /* AppDelegate.h */,
@@ -176,6 +184,9 @@
 				414BAFD61E7E948C00B981F2 /* ViewController.m */,
 				4152C5401EE59CC6005A1192 /* RecordViewController.h */,
 				4152C5411EE59CC6005A1192 /* RecordViewController.m */,
+				415611641F934BE6004A2E64 /* DetailViewController.h */,
+				415611651F934BE6004A2E64 /* DetailViewController.m */,
+				415611661F934BE6004A2E64 /* DetailViewController.xib */,
 				4174BA961EEC232800B04ADD /* DataModel */,
 				4152C5431EE5A32C005A1192 /* Model */,
 				414BAFD81E7E948C00B981F2 /* Main.storyboard */,
@@ -363,6 +374,7 @@
 			files = (
 				414BAFDF1E7E948C00B981F2 /* LaunchScreen.storyboard in Resources */,
 				414BAFDC1E7E948C00B981F2 /* Assets.xcassets in Resources */,
+				415611681F934BE6004A2E64 /* DetailViewController.xib in Resources */,
 				4152C5481EE5A357005A1192 /* Record.xib in Resources */,
 				414BAFDA1E7E948C00B981F2 /* Main.storyboard in Resources */,
 			);
@@ -439,6 +451,8 @@
 			files = (
 				4152C5471EE5A357005A1192 /* Record.m in Sources */,
 				4174BA9C1EEC244200B04ADD /* DataBase.m in Sources */,
+				415611671F934BE6004A2E64 /* DetailViewController.m in Sources */,
+				414111341F0FCDAF00F67C66 /* Foundation+Log.m in Sources */,
 				414BAFD71E7E948C00B981F2 /* ViewController.m in Sources */,
 				4174BA991EEC235300B04ADD /* History.m in Sources */,
 				414BAFD41E7E948C00B981F2 /* AppDelegate.m in Sources */,

@@ -10,6 +10,7 @@
 #import "RecordViewController.h"
 #import "History.h"
 #import "DataBase.h"
+#import "Foundation+Log.m"
 
 #define MARGIN 20
 #define TEXTVIEW_HEIGHT 100
@@ -75,6 +76,7 @@
     return _button;
 }
 - (void)viewDidLoad {
+
     [super viewDidLoad];
     self.navigationItem.title=@"发送通知";
     [self.textView becomeFirstResponder];//输入框成为第一响应者
@@ -82,6 +84,7 @@
     [self.view addSubview:self.textView];
     [self.view addSubview:self.picker];
     [self.view addSubview:self.timeLable];
+    
 }
 //字符串转日期
 -(NSDate *)datefromstring:(NSString *)dateStr
@@ -158,6 +161,24 @@
     }
     return YES;
 }
-
-
+//中文分词功能
+-(NSArray *)stringTokenizerWithWord:(NSString *)word{
+    NSMutableArray *keyWords=[[NSMutableArray alloc]init];
+    
+    CFStringTokenizerRef ref=CFStringTokenizerCreate(NULL,  (__bridge CFStringRef)word, CFRangeMake(0, word.length),kCFStringTokenizerUnitWord,NULL);
+    CFRange range;
+    CFStringTokenizerAdvanceToNextToken(ref);
+    range=CFStringTokenizerGetCurrentTokenRange(ref);
+    NSString *keyWord;
+    
+    
+    while (range.length>0)
+    {
+        keyWord=[word substringWithRange:NSMakeRange(range.location, range.length)];
+        [keyWords addObject:keyWord];
+        CFStringTokenizerAdvanceToNextToken(ref);
+        range=CFStringTokenizerGetCurrentTokenRange(ref);
+    }
+    return keyWords;
+}
 @end
