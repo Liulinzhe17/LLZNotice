@@ -7,9 +7,7 @@
 //
 
 #import "DataBase.h"
-
 #import <FMDB.h>
-
 #import "History.h"
 
 static DataBase *_DBCtl = nil;

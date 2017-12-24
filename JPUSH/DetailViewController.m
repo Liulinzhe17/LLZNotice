@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title=@"详情页";
-    
+    [self loadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -25,5 +25,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)loadData{
+    self.time.text=self.timeText;
+    self.state.text=self.stateText;
+    self.detail.text=self.detailText;
+}
 
 @end

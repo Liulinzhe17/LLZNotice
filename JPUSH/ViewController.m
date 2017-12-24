@@ -161,24 +161,4 @@
     }
     return YES;
 }
-//中文分词功能
--(NSArray *)stringTokenizerWithWord:(NSString *)word{
-    NSMutableArray *keyWords=[[NSMutableArray alloc]init];
-    
-    CFStringTokenizerRef ref=CFStringTokenizerCreate(NULL,  (__bridge CFStringRef)word, CFRangeMake(0, word.length),kCFStringTokenizerUnitWord,NULL);
-    CFRange range;
-    CFStringTokenizerAdvanceToNextToken(ref);
-    range=CFStringTokenizerGetCurrentTokenRange(ref);
-    NSString *keyWord;
-    
-    
-    while (range.length>0)
-    {
-        keyWord=[word substringWithRange:NSMakeRange(range.location, range.length)];
-        [keyWords addObject:keyWord];
-        CFStringTokenizerAdvanceToNextToken(ref);
-        range=CFStringTokenizerGetCurrentTokenRange(ref);
-    }
-    return keyWords;
-}
 @end

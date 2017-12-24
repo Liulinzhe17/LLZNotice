@@ -125,9 +125,9 @@
 #pragma JPUSH方法
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     //这个方法是设置别名和tag 可省
-     [JPUSHService setTags:nil alias:@"WzxJiang" fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias) {
-            NSLog(@"rescode: %d, \ntags: %@, \nalias: %@\n", iResCode, iTags , iAlias);
-       }];
+//     [JPUSHService setTags:nil alias:@"WzxJiang" fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias) {
+//            NSLog(@"rescode: %d, \ntags: %@, \nalias: %@\n", iResCode, iTags , iAlias);
+//       }];
     // Required
     [JPUSHService registerDeviceToken:deviceToken];
 }
@@ -152,7 +152,7 @@
     //NSLog(@"小点点个数：%d",(int)[UIApplication sharedApplication].applicationIconBadgeNumber);
     //NSLog(@"%@", notification.userInfo);
 }
-- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void (^)())completionHandler{
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void (^)(void))completionHandler{
     // 我们可以在这里获取标识符，根据标识符进行判断是前台按钮还是后台按钮还是神马按钮，进行相关逻辑处理（如回复消息）
     NSLog(@"identifier : %@",identifier);
     // 一旦接受必须调用的方法（告诉系统什么时候结束，系统自己对内部进行资源调配）
