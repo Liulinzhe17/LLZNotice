@@ -33,6 +33,7 @@
 		41772E911E7E986B002A39CA /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41772E901E7E986B002A39CA /* CoreTelephony.framework */; };
 		41772E931E7E9878002A39CA /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41772E921E7E9878002A39CA /* CoreFoundation.framework */; };
 		41772E951E7E9886002A39CA /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41772E941E7E9886002A39CA /* CFNetwork.framework */; };
+		41D2642C1FF9D7DE001DBF5A /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41D2642B1FF9D7DE001DBF5A /* SearchViewController.m */; };
 		E6A491D21EE167B056294322 /* libPods-JPUSH.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 918C5DAB05A18F1ABC21423B /* libPods-JPUSH.a */; };
 /* End PBXBuildFile section */
 
@@ -95,6 +96,8 @@
 		41772E901E7E986B002A39CA /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		41772E921E7E9878002A39CA /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		41772E941E7E9886002A39CA /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		41D2642A1FF9D7DE001DBF5A /* SearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		41D2642B1FF9D7DE001DBF5A /* SearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		918C5DAB05A18F1ABC21423B /* libPods-JPUSH.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JPUSH.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC53C3CD734835615F68CD0E /* Pods-JPUSH.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JPUSH.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JPUSH/Pods-JPUSH.debug.xcconfig"; sourceTree = "<group>"; };
 		FF15A2F4A2773DC4765E65F5 /* Pods-JPUSH.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JPUSH.release.xcconfig"; path = "Pods/Target Support Files/Pods-JPUSH/Pods-JPUSH.release.xcconfig"; sourceTree = "<group>"; };
@@ -204,6 +207,8 @@
 				414BAFD61E7E948C00B981F2 /* ViewController.m */,
 				4152C5401EE59CC6005A1192 /* RecordViewController.h */,
 				4152C5411EE59CC6005A1192 /* RecordViewController.m */,
+				41D2642A1FF9D7DE001DBF5A /* SearchViewController.h */,
+				41D2642B1FF9D7DE001DBF5A /* SearchViewController.m */,
 				415611641F934BE6004A2E64 /* DetailViewController.h */,
 				415611651F934BE6004A2E64 /* DetailViewController.m */,
 				415611661F934BE6004A2E64 /* DetailViewController.xib */,
@@ -478,6 +483,7 @@
 				4174BA991EEC235300B04ADD /* History.m in Sources */,
 				414BAFD41E7E948C00B981F2 /* AppDelegate.m in Sources */,
 				414BAFD11E7E948C00B981F2 /* main.m in Sources */,
+				41D2642C1FF9D7DE001DBF5A /* SearchViewController.m in Sources */,
 				41241BF01FEF745900E547EA /* LLZHelper.m in Sources */,
 				4152C5421EE59CC6005A1192 /* RecordViewController.m in Sources */,
 			);

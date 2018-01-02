@@ -1,58 +1,37 @@
 //
-//  RecordViewController.m
+//  SearchViewController.m
 //  JPUSH
 //
-//  Created by 柳麟喆 on 2017/6/5.
-//  Copyright © 2017年 lzLiu. All rights reserved.
+//  Created by 柳麟喆 on 2018/1/1.
+//  Copyright © 2018年 lzLiu. All rights reserved.
 //
 
-#import "RecordViewController.h"
-#import "DetailViewController.h"
 #import "SearchViewController.h"
-#import "Record.h"
+#import "DetailViewController.h"
 #import "DataBase.h"
+#import "Record.h"
 #import "History.h"
-#import "MJRefresh.h"
 #import "LLZHelper.h"
 
-@interface RecordViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchControllerDelegate>
+@interface SearchViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property(nonatomic,strong)UITableView *tableView;
+@property(nonatomic,strong)NSMutableArray *searchArray;
 @property(nonatomic,strong)NSMutableArray *dataArray;
-@property(nonatomic,strong)UISearchController *serachController;
 
 @end
 
-@implementation RecordViewController
+@implementation SearchViewController
+
 #pragma mark - *******懒加载*******
-- (UISearchController *)serachController{
-    if(_serachController==nil){
-        SearchViewController *display = [[SearchViewController alloc]init];
-        UINavigationController *nav=[[UINavigationController alloc]initWithRootViewController:display];
-        _serachController=[[UISearchController alloc]initWithSearchResultsController:nav];
-        _serachController.searchResultsUpdater=display;
-        _serachController.delegate=self;
-        _serachController.hidesNavigationBarDuringPresentation=YES;
-        _serachController.obscuresBackgroundDuringPresentation=YES;
-        _serachController.searchBar.barTintColor=[UIColor yellowColor];
-        _serachController.searchBar.tintColor=[UIColor blueColor];
-        _serachController.searchBar.placeholder=@"搜索";
-        _serachController.searchBar.translucent=YES;
-        [_serachController.searchBar sizeToFit];
-    }
-    return _serachController;
-}
 - (UITableView *)tableView{
     if (_tableView==nil) {
         _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStylePlain];
-        _tableView.tableHeaderView=self.serachController.searchBar;
         _tableView.rowHeight=50;
         _tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+        _tableView.backgroundColor = [UIColor whiteColor];
         _tableView.dataSource=self;
         _tableView.delegate=self;
-//        _tableView.mj_header=[MJRefreshNormalHeader headerWithRefreshingBlock:^{
-//            [self updateRecord];
-//        }];
     }
     return _tableView;
 }
@@ -64,35 +43,27 @@
     return _dataArray;
 }
 
+- (NSMutableArray *)searchArray{
+    if (!_searchArray) {
+        _searchArray = [[NSMutableArray alloc] init];
+    }
+    return _searchArray;
+}
+
 #pragma mark - *******视图生命周期*******
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setUpView];
-    self.definesPresentationContext=YES;
-    //不拓展
-//    self.serachController.edgesForExtendedLayout = UIRectEdgeNone;
+    [self.view addSubview:self.tableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     self.dataArray = [[DataBase sharedDataBase] getAllHistory];
-//   [self.tableView.mj_header beginRefreshing];
-}
-#pragma mark - *******视图加载*******
-- (void)setUpView{
-    self.navigationItem.title=@"历史记录";
-    [self.view addSubview:self.tableView];
-    //添加导航栏上的右按钮
-    UIButton *rightBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 32, 32)];
-    [rightBtn setImage:[UIImage imageNamed:@"updatePic.png"] forState:UIControlStateNormal];
-    [rightBtn addTarget:self action:@selector(updateRecord) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithCustomView:rightBtn];
-    self.navigationItem.rightBarButtonItem = rightItem;
 }
 
 #pragma mark - *******tableview代理方法*******
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.dataArray.count;
+    return self.searchArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -107,7 +78,7 @@
         cell=[[[NSBundle mainBundle]loadNibNamed:@"Record" owner:nil options:nil]lastObject];
     }
     History *history;
-    history = self.dataArray[indexPath.row];
+    history = self.searchArray[indexPath.row];
     
     cell.Time.text=history.Time;
     cell.Detail.text=history.Detail;
@@ -138,7 +109,8 @@
     //删除按钮
     if (editingStyle == UITableViewCellEditingStyleDelete){
         History *history;
-        history=self.dataArray[indexPath.row];
+        history=self.searchArray[indexPath.row];
+        [self.searchArray removeObjectAtIndex:indexPath.row];
         [self.dataArray removeObjectAtIndex:indexPath.row];
         [[DataBase sharedDataBase] deleteHistory:history];
         [self.tableView reloadData];
@@ -146,30 +118,44 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+//    [self tableViewCellMove:120];//防止点击时tableview下移
     [tableView cellForRowAtIndexPath:indexPath].selected=NO;
     History *h;
-    h=self.dataArray[indexPath.row];
+    h=self.searchArray[indexPath.row];
     DetailViewController *detailVC=[[DetailViewController alloc]init];
     detailVC.timeText=h.Time;
     detailVC.detailText=h.Detail;
     detailVC.stateText=h.State;
-    [self.navigationController pushViewController:detailVC animated:YES];
+    [self.presentingViewController.navigationController pushViewController:detailVC animated:YES];
 }
 
-- (void)willPresentSearchController:(UISearchController *)searchController{
-    self.tabBarController.tabBar.hidden=YES;
-}
-
-- (void)willDismissSearchController:(UISearchController *)searchController{
-    self.tabBarController.tabBar.hidden=NO;
-    [self updateRecord];
-}
-
-#pragma mark - *******刷新tableviewcell*******
-- (void)updateRecord{
-    self.dataArray = [[DataBase sharedDataBase] getAllHistory];
+#pragma mark - *******搜索框代理方法*******
+-(void)updateSearchResultsForSearchController:(UISearchController *)searchController{
+    CGRect rect = self.tableView.frame;
+    NSLog(@"*******tableHeaderView:%@*******",NSStringFromCGRect(rect));
+    if (self.tableView.frame.origin.y!=76) {
+        [self tableViewCellMove:76];
+    }
+    NSString *searchString=[searchController.searchBar text];
+    if(self.searchArray!=nil){
+        [self.searchArray removeAllObjects];
+    }
+    for (int i=0; i<self.dataArray.count; i++) {
+        History *h=self.dataArray[i];
+        if([h.Detail rangeOfString:searchString].location!=NSNotFound){
+            [self.searchArray addObject:self.dataArray[i]];
+        }
+    }
     [self.tableView reloadData];
-//    [self.tableView.mj_header endRefreshing];
 }
 
+#pragma mark - *******tableviewcell移动*******
+- (void)tableViewCellMove: (CGFloat)value{
+    CGFloat y = -value;
+    CGFloat x = self.tableView.frame.origin.x;
+    CGFloat height = [UIScreen mainScreen].bounds.size.height+value;
+    CGFloat width = self.tableView.frame.size.width;
+    CGRect rect = CGRectMake(x, y, width, height);
+    [self.tableView setFrame:rect];
+}
 @end
